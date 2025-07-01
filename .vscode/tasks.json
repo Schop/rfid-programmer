@@ -1,0 +1,104 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "PIO Build",
+            "type": "shell",
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "run"],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "PIO Upload",
+            "type": "shell", 
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "run", "--target", "upload"],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "PIO Clean",
+            "type": "shell",
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "run", "--target", "clean"],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "PIO Serial Monitor",
+            "type": "shell",
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "device", "monitor"],
+            "group": "test",
+            "isBackground": true,
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "PIO Build and Upload",
+            "dependsOrder": "sequence",
+            "dependsOn": ["PIO Build", "PIO Upload"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "PIO Upload (Manual Boot)",
+            "type": "shell", 
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "run", "--target", "upload", "--upload-port", "COM5"],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "Check ESP32 Connection",
+            "type": "shell",
+            "command": "C:/Python312/python.exe",
+            "args": ["-m", "platformio", "device", "list"],
+            "group": "test",
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        },
+        {
+            "label": "ESP32 Manual Upload (Step-by-Step)",
+            "type": "shell", 
+            "command": "cmd",
+            "args": ["/c", "echo Step 1: Get ready to press BOOT button && timeout 3 && echo Step 2: Starting upload - PRESS BOOT BUTTON NOW! && C:/Python312/python.exe -m platformio run --target upload --upload-port COM5"],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "panel": "dedicated",
+                "reveal": "always",
+                "clear": true
+            }
+        }
+    ]
+}
