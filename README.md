@@ -45,10 +45,11 @@ An ESP32-based RFID card programmer using the RC522 module. This project allows 
 
 ### Sample Program
 The main program (`src/main.cpp`) provides:
-- **Auto Mode**: Automatically programs consecutive numbers to RFID cards
+- **Auto Mode**: Automatically programs consecutive numbers starting from your chosen number
 - **Manual Mode**: Allows you to enter specific numbers to write to cards
 - **Read Mode**: Reads and displays the data stored on RFID cards
 - **Real-time mode switching**: Change modes instantly without restarting
+- **Dynamic starting numbers**: Set custom starting point for auto mode
 - **Optimized performance**: Fast card detection and writing
 
 ### Configuration
@@ -75,7 +76,10 @@ lib_deps =
    - Enter `auto` for automatic sequential numbering
    - Enter `manual` for custom number input
    - Enter `read` to read card data
-3. **Auto Mode**: Present cards to automatically write consecutive numbers
+3. **Auto Mode**: 
+   - Enter `auto` to activate auto mode
+   - When prompted, enter your desired starting number (e.g., `25`)
+   - Present cards to automatically write consecutive numbers (25, 26, 27, etc.)
 4. **Manual Mode**: Enter a number, then present the card to write that number
 5. **Read Mode**: Present cards to display their stored data
 6. **Switch modes**: Type the new mode name at any time to switch instantly
@@ -97,3 +101,22 @@ lib_deps =
 - [ESP32 Arduino Core Documentation](https://docs.espressif.com/projects/arduino-esp32/en/latest/)
 - [PlatformIO ESP32 Platform](https://docs.platformio.org/en/latest/platforms/espressif32.html)
 - [ESP32 Pinout Reference](https://randomnerdtutorials.com/esp32-pinout-reference-gpios/)
+
+## Features
+
+### Enhanced Auto Mode
+- **Dynamic Starting Numbers**: Choose any starting number for sequential programming
+- **Flexible Range**: Start from 0 or any positive number
+- **Continuous Operation**: Once started, cards are programmed sequentially without interruption
+- **Real-time Feedback**: Shows current number and next number to be written
+
+### Three Operation Modes
+- **Auto Mode**: Sequential numbering with user-defined starting point
+- **Manual Mode**: Individual number entry for each card
+- **Read Mode**: Display stored data from existing cards
+
+### Performance Optimizations
+- **High-Speed SPI**: 10MHz SPI frequency for faster card operations
+- **Maximum Antenna Gain**: Optimized for better card detection range
+- **Instant Mode Switching**: Change modes without device restart
+- **Non-blocking Operation**: Responsive to mode changes even during card operations
