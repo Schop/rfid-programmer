@@ -42,7 +42,8 @@ void manualModus();
 void readModus();
 
 String mode;
-int currentNumber = 7; //NUMBER TO START FROM
+int currentNumber = 1; // Will be set when entering auto mode
+bool autoModeReady = false; // Flag to track if auto mode is ready with starting number
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
 
@@ -66,29 +67,50 @@ void loop() {
 
   if (Serial.available()) {
 
-    mode = Serial.readStringUntil('\n');
-    mode.trim(); // Remove any whitespace/newlines
+    String input = Serial.readStringUntil('\n');
+    input.trim(); // Remove any whitespace/newlines
 
-    if (mode == "auto" || mode == "manual" || mode == "read") {
+    // Handle auto mode setup
+    if (mode == "auto" && !autoModeReady) {
+      // We're in auto mode but need starting number
+      int startingNumber = input.toInt();
+      if (startingNumber > 0 || input == "0") {
+        currentNumber = startingNumber;
+        autoModeReady = true;
+        Serial.println(" ");
+        Serial.println("Auto mode ready! Starting number: " + String(currentNumber));
+        Serial.println(F("Place the card on the reader and hold it there to write song number data to the card"));
+        Serial.println(F("(Type a new mode anytime to switch)"));
+      } else {
+        Serial.println("Please enter a valid number (0 or greater):");
+      }
+      return;
+    }
+
+    // Handle mode changes
+    if (input == "auto" || input == "manual" || input == "read") {
+      mode = input;
+      autoModeReady = false; // Reset auto mode ready flag
+      
       Serial.println(" ");
       Serial.println("Device is now in " + mode + " mode");
       
-      if (mode == "read") {
+      if (mode == "auto") {
+        Serial.println(F("Please enter the starting number:"));
+      } else if (mode == "read") {
         Serial.println(F("Place the card on the reader to read its number"));
+        Serial.println(F("(Type a new mode anytime to switch)"));
       } else {
         Serial.println(F("Place the card on the reader and hold it there to write song number data to the card"));
-        if (mode == "auto") Serial.println((String)"Number to be written to card: " + currentNumber);
+        Serial.println(F("(Type a new mode anytime to switch)"));
       }
-      Serial.println(F("(Type a new mode anytime to switch)"));
-    }
-
-    if (mode != "auto" && mode != "manual" && mode != "read") {
+    } else if (mode != "auto" && mode != "manual" && mode != "read") {
       Serial.println("Wrong value, write 'auto', 'manual', or 'read'");
     }
   }
 
   // Execute the current mode functions (these check for cards)
-  if (mode == "auto") {
+  if (mode == "auto" && autoModeReady) {
     autoModus();
   } else if (mode == "manual") {
     manualModus();
